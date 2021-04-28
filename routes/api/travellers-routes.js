@@ -3,7 +3,9 @@ const { Location, Traveller, Trip } = require('../../models');
 
 router.get('/', async (req, res) => {
   try {
-    const TravellerData = await Traveller.findAll();
+    const TravellerData = await Traveller.findAll({
+      include: [{ model: Trip }],
+    });
     res.status(200).json(TravellerData);
   } catch (err) {
     res.status(500).json(err);
@@ -12,7 +14,9 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const TravellerData = await Traveller.findByPk(req.params.id);
+    const TravellerData = await Traveller.findByPk(req.params.id,{
+      include: [{ model: Trip }],
+    });
     if (!TravellerData) {
       res.status(404).json({ message: 'No Location with this id!' });
       return;
