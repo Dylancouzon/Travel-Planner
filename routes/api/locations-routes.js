@@ -1,20 +1,54 @@
 const router = require('express').Router();
-const { Category, Product } = require('../../models');
+const { Locations, Travellers, Trips } = require('../../models');
 
-router.get('/', (req, res) => {
-// returns all location data in Insomnia Core.
+router.get('/', async (req, res) => {
+  try {
+    const locationData = await Locations.findAll();
+    res.status(200).json(locationData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
-router.get('/:id', (req, res) => {
-// returns a single location's data, with its associated trips, in Insomnia Core. 
+router.get('/:id', async (req, res) => {
+  try {
+    const locationData = await Locations.findByPk(req.params.id);
+    if (!locationData) {
+      res.status(404).json({ message: 'No Location with this id!' });
+      return;
+    }
+    res.status(200).json(locationData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
-router.post('/', (req, res) => {
-  // creates location data and returns a successful response in Insomnia Core.
+router.post('/', async (req, res) => {
+  try {
+    const locationData = await Locations.create({
+      location_name: req.body.location_name,
+    });
+    res.status(200).json(locationData);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 });
 
-router.delete('/:id', (req, res) => {
-  //   removes a location and any trips associated with it and returns a successful response in Insomnia Core.
+router.delete('/:id', async (req, res) => {
+  try {
+    const locationData = await Locations.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!locationData) {
+      res.status(404).json({ message: 'No Location with this id!' });
+      return;
+    }
+    res.status(200).json(locationData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
