@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { Category, Product } = require('../../models');
 
 router.post('/', (req, res) => {
-  // creates trip data between associated travellers and locations.
+  //* creates trip data between associated travellers and locations.
   try {
     const tripData = await Trip.create({
       reader_id: req.body.reader_id,{ 
