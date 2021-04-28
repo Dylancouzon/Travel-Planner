@@ -5,8 +5,10 @@ router.post('/', (req, res) => {
   //* creates trip data between associated travellers and locations.
   try {
     const tripData = await Trip.create({
-      reader_id: req.body.reader_id,{ 
-        include: [{ model: Traveller }, { model: Location } ],
+    trip_budget: req.body.trip._budget,
+    traveller_amount: req.body.traveller_amount,
+    traveller_id: req.body.traveller_id,
+    location_id: req.body.location_id,
     });
     res.status(200).json(tripData);
   } catch (err) {
